@@ -60,12 +60,28 @@ void insertNum(int* maxHeap, int num) {
     counter++;
   }
   maxHeap[counter] = num;
+	heapify(maxHeap);
 }
 
 void displayHeap(int* maxHeap) {
   for(int i = 1; i < 101; i++) {
     if(maxHeap[i] != 0){
       cout << maxHeap[i] << endl;
+    }
+  }
+}
+
+void heapify(int* maxHeap) {
+  for(int i = 1; i < 101; i++) {
+    if(maxHeap[i] != 0 && maxHeap[i*2] != 0 && maxHeap[i] < maxHeap[i*2]) {
+      int temp = maxHeap[i];
+      maxHeap[i] = maxHeap[i*2];
+      maxHeap[i*2] = temp;
+    }
+    if(maxHeap[i] != 0 && maxHeap[i*2+1] != 0 && maxHeap[i] < maxHeap[i*2+1]) {
+      int temp2 = maxHeap[i];
+      maxHeap[i] = maxHeap[i*2+1];
+      maxHeap[i*2+1] = temp2;
     }
   }
 }
