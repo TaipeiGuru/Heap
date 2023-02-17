@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 
@@ -12,10 +13,8 @@ int main() {
   bool active = true;
   while(active == true) {
     cout << "Welcome to Heap!" << endl;
-    cout << "Your commands are \"INSERT,\" \"REMOVE LARGEST,\" \"REMOVE ALL,\" \"DISPLAY,\" and \"QUIT.\"" << endl;
+    cout << "\nYour commands are \"INSERT,\" \"REMOVE LARGEST,\" \"REMOVE ALL,\" \"DISPLAY,\" and \"QUIT.\"" << endl;
     cin.getline(input, 20);
-    cin.clear();
-    cin.ignore(10000, '\n');
     if(strcmp(input, "INSERT") == 0) {
                
     } else if(strcmp(input, "REMOVE LARGEST") == 0) {
