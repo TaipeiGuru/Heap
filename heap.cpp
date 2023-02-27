@@ -6,7 +6,7 @@ using namespace std;
 
 void insertNum(int* maxHeap, int num, int counter);
 void displayHeap(int* maxHeap, int index, int tabCounter);
-void heapify(int* maxHeap, int index);
+void heapify(int* maxHeap);
 int removeLargest(int* maxHeap);
 void removeAll(int* maxHeap);
 // void fileAdd(int* maxHeap);
@@ -77,7 +77,7 @@ void insertNum(int* maxHeap, int num, int counter) {
       insertNum(maxHeap, num, counter);
     }
   }
-  heapify(maxHeap, 1);
+  heapify(maxHeap);
 }
 
 // https://www.geeksforgeeks.org/print-binary-tree-2-dimensions/
@@ -104,31 +104,19 @@ void displayHeap(int* maxHeap, int index, int tabCounter) {
   displayHeap(maxHeap, (index*2), tabCounter);
 }
 
-void heapify(int* maxHeap, int index) {
-  /*if(maxHeap[index] < maxHeap[index*2] || maxHeap[index] < maxHeap[index*2+1]) {
-    if(maxHeap[index*2] > maxHeap[index*2+1] && maxHeap[index*2] != 0) {
-      int temp = maxHeap[index];
-      maxHeap[index] = maxHeap[index*2];
-      maxHeap[index*2] = temp;
-      heapify(maxHeap, index*2);
-    } else if(maxHeap[index*2+1] > maxHeap[index*2] && maxHeap[index*2+1] != 0){
-      int temp = maxHeap[index];
-      maxHeap[index] = maxHeap[index*2+1];
-      maxHeap[index*2] = temp;
-      heapify(maxHeap, index*2+1);
+void heapify(int* maxHeap) {
+  for(int i = 1; i < 101; i++) {
+    if(maxHeap[i] != 0 && maxHeap[i*2] != 0 && maxHeap[i] < maxHeap[i*2] && maxHeap[i*2] > maxHeap[i*2+1]) {
+      int temp = maxHeap[i];
+      maxHeap[i] = maxHeap[i*2];
+      maxHeap[i*2] = temp;
+      heapify(maxHeap);
+    } else if(maxHeap[i] != 0 && maxHeap[i*2+1] != 0 && maxHeap[i] < maxHeap[i*2+1] && maxHeap[i*2+1] > maxHeap[i*2]) {
+      int temp2 = maxHeap[i];
+      maxHeap[i] = maxHeap[i*2+1];
+      maxHeap[i*2+1] = temp2;
+      heapify(maxHeap);
     }
-  }*/
-  
-  if(maxHeap[index] != 0 && maxHeap[index*2] != 0 && maxHeap[index] < maxHeap[index*2]) {
-    int temp = maxHeap[index];
-    maxHeap[index] = maxHeap[index*2];
-    maxHeap[index*2] = temp;
-    heapify(maxHeap, index*2);
-  }
-  if(maxHeap[i] != 0 && maxHeap[i*2+1] != 0 && maxHeap[i] < maxHeap[i*2+1]) {
-    int temp2 = maxHeap[i];
-    maxHeap[i] = maxHeap[i*2+1];
-    maxHeap[i*2+1] = temp2;
   }
 }
 
@@ -137,10 +125,13 @@ int removeLargest(int* maxHeap) {
   int largestNum = maxHeap[index];
   int temp;
   maxHeap[index] = -1;
-  heapify(maxHeap, 1);
+  heapify(maxHeap);
   for(int i = 0; i<101; i++) {
     if(maxHeap[i] == -1) {
       maxHeap[i] = 0;
+    }
+    if(maxHeap[i] != 0) {
+      cout << maxHeap[i] << " " << i << endl;
     }
   }
   displayHeap(maxHeap, 1, 0);
@@ -173,27 +164,22 @@ void removeAll(int* maxHeap) {
   }
 }
 
-/*void fileAdd(int* maxHeap) {
+void fileAdd(int* maxHeap) {
   cout << "Please enter the name of your file:" << endl;
   char input[20];
   cin >> input;
-  // Create objects for first and last name files
+ 
   ifstream numFile;    
-  // Open both files
+
   numFile.open(input);
 
-  // Initialize random line
-   If the file is open and the reader reaches the randomly generated line, copy that name into the student's first name slot. 
-   * Otherwise, put that name into a char array and continue on 
+  int num;
   if(firstNameFile.is_open() == true) {
-    for(int a = 0; a < 20; a++) {
-      if(a != randomLine){
-        firstNameFile >> name; 
-      } else {
-        strcpy(newStudent->getFirstName(), name);
-      }
+    while(numFile.is_open() == true) {
+      numFile >> num;
+      insertNum(maxHeap, num, 1);
     }
   }
 
   numFile.close();
-} */
+} 
