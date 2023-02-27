@@ -9,7 +9,7 @@ void displayHeap(int* maxHeap, int index, int tabCounter);
 void heapify(int* maxHeap, int index);
 int removeLargest(int* maxHeap);
 void removeAll(int* maxHeap);
-void fileAdd(int* maxHeap);
+// void fileAdd(int* maxHeap);
 
 int main() {
   int maxHeap[101];
@@ -40,7 +40,7 @@ int main() {
         cin.ignore(10000, '\n');
         insertNum(maxHeap, num, 1);
       } else if(strcmp(input, "FILE") == 0) {
-         fileAdd(maxHeap);
+	// fileAdd(maxHeap);
       } else {
         cout << "Sorry, invalid input." << endl; 
       }
@@ -77,7 +77,7 @@ void insertNum(int* maxHeap, int num, int counter) {
       insertNum(maxHeap, num, counter);
     }
   }
-  heapify(maxHeap);
+  heapify(maxHeap, 1);
 }
 
 // https://www.geeksforgeeks.org/print-binary-tree-2-dimensions/
@@ -137,7 +137,7 @@ int removeLargest(int* maxHeap) {
   int largestNum = maxHeap[index];
   int temp;
   maxHeap[index] = -1;
-  heapify(maxHeap);
+  heapify(maxHeap, 1);
   for(int i = 0; i<101; i++) {
     if(maxHeap[i] == -1) {
       maxHeap[i] = 0;
