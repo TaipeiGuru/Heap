@@ -6,7 +6,8 @@ using namespace std;
 void insertNum(int* maxHeap, int num, int counter);
 void displayHeap(int* maxHeap, int index, int tabCounter);
 void heapify(int* maxHeap);
-void removeLargest(int* maxHeap);
+int removeLargest(int* maxHeap);
+void removeAll(int* maxHeap);
 
 int main() {
   int maxHeap[101];
@@ -42,9 +43,10 @@ int main() {
         cout << "Sorry, invalid input." << endl; 
       }
     } else if(strcmp(input, "REMOVE_LARGEST") == 0) {
-      removeLargest(maxHeap);
+      int removedNum = removeLargest(maxHeap);
+      cout << "The largest number (" << removedNum << ") was removed." << endl;
     } else if(strcmp(input, "REMOVE_ALL") == 0) {
-      
+      removeAll(maxHeap);
     } else if(strcmp(input, "DISPLAY") == 0) {
       int index = 1;
       displayHeap(maxHeap, index, 0);
@@ -61,7 +63,6 @@ void insertNum(int* maxHeap, int num, int counter) {
   if(maxHeap[counter] == 0){
     maxHeap[counter] = num;
   } else if(maxHeap[counter*2+1] == 0) {
-    cout << maxHeap[counter*2+1] << endl;
     maxHeap[counter*2+1] = num;
   } else if(maxHeap[counter*2] == 0) {
     maxHeap[counter*2] = num;
@@ -116,16 +117,43 @@ void heapify(int* maxHeap) {
   }
 }
 
-void removeLargest(int* maxHeap) {
+int removeLargest(int* maxHeap) {
   int index = 1;
   int largestNum = maxHeap[index];
   int temp;
-  maxHeap[index] = 0;
-  while(maxHeap[index*2] != 0) {
-    temp = maxHeap[index];
-    maxHeap[index] = maxHeap[index*2];
-    maxHeap[index*2] = temp;
-    index = index*2;
+  maxHeap[index] = -1;
+  heapify(maxHeap);
+  for(int i = 0; i<101; i++) {
+    if(maxHeap[i] == -1) {
+      maxHeap[i] = 0;
+    }
   }
-  cout << "The largest number (" << largestNum << ") was removed." << endl;
+  displayHeap(maxHeap, 1, 0);
+  return largestNum;
+  /*if(maxHeap[index*2] > maxHeap[index*2+1]) {
+    while(maxHeap[index*2] != 0) {
+      temp = maxHeap[index];
+      maxHeap[index] = maxHeap[index*2];
+      maxHeap[index*2] = temp;
+      index = index*2;
+    }
+    return largestNum;
+  } else if(maxHeap[index*2+1] > maxHeap[index*2]) {
+    while(maxHeap[index*2+1] != 0) {
+      temp = maxHeap[index];
+      maxHeap[index] = maxHeap[index*2+1];
+      maxHeap[index*2+1] = temp;
+      index = index*2+1;
+    }
+    return largestNum;
+  }*/
+}
+
+void removeAll(int* maxHeap) {
+  if(maxHeap[1] != 0) {
+    while(maxHeap[1] != 0) {
+      int num = removeLargest(maxHeap);
+      cout << "Removed number: " << num << endl;
+    }
+  }
 }
