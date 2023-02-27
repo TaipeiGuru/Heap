@@ -9,7 +9,7 @@ void displayHeap(int* maxHeap, int index, int tabCounter);
 void heapify(int* maxHeap);
 int removeLargest(int* maxHeap);
 void removeAll(int* maxHeap);
-// void fileAdd(int* maxHeap);
+void fileAdd(int* maxHeap);
 
 int main() {
   int maxHeap[101];
@@ -40,7 +40,7 @@ int main() {
         cin.ignore(10000, '\n');
         insertNum(maxHeap, num, 1);
       } else if(strcmp(input, "FILE") == 0) {
-	// fileAdd(maxHeap);
+	fileAdd(maxHeap);
       } else {
         cout << "Sorry, invalid input." << endl; 
       }
@@ -174,7 +174,7 @@ void fileAdd(int* maxHeap) {
   numFile.open(input);
 
   int num;
-  if(firstNameFile.is_open() == true) {
+  if(numFile.is_open() == true) {
     while(numFile.is_open() == true) {
       numFile >> num;
       insertNum(maxHeap, num, 1);
