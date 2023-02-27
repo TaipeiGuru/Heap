@@ -105,7 +105,7 @@ void displayHeap(int* maxHeap, int index, int tabCounter) {
 }
 
 void heapify(int* maxHeap, int index) {
-  if(maxHeap[index] < maxHeap[index*2] || maxHeap[index] < maxHeap[index*2+1]) {
+  /*if(maxHeap[index] < maxHeap[index*2] || maxHeap[index] < maxHeap[index*2+1]) {
     if(maxHeap[index*2] > maxHeap[index*2+1] && maxHeap[index*2] != 0) {
       int temp = maxHeap[index];
       maxHeap[index] = maxHeap[index*2];
@@ -117,9 +117,9 @@ void heapify(int* maxHeap, int index) {
       maxHeap[index*2] = temp;
       heapify(maxHeap, index*2+1);
     }
-  }
+  }*/
   
-  /*if(maxHeap[index] != 0 && maxHeap[index*2] != 0 && maxHeap[index] < maxHeap[index*2]) {
+  if(maxHeap[index] != 0 && maxHeap[index*2] != 0 && maxHeap[index] < maxHeap[index*2]) {
     int temp = maxHeap[index];
     maxHeap[index] = maxHeap[index*2];
     maxHeap[index*2] = temp;
@@ -129,7 +129,7 @@ void heapify(int* maxHeap, int index) {
     int temp2 = maxHeap[i];
     maxHeap[i] = maxHeap[i*2+1];
     maxHeap[i*2+1] = temp2;
-  }*/
+  }
 }
 
 int removeLargest(int* maxHeap) {
