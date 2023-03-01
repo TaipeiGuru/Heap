@@ -172,12 +172,14 @@ void fileAdd(int* maxHeap) {
   ifstream numFile;    
 
   numFile.open(input);
-
+ 
   int num;
   if(numFile.is_open() == true) {
-    while(numFile.is_open() == true) {
-      numFile >> num;
+    while(numFile >> num) {   
+      cout << "num: " << num << endl;
       insertNum(maxHeap, num, 1);
+      displayHeap(maxHeap, 1, 0);
+      cout << "BREAKKKKKKKKKKKKKKKKKKKKKKKKKKKK" << endl;
     }
   }
 
