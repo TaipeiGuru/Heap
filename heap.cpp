@@ -1,12 +1,14 @@
 #include <iostream>
 #include <cstring>
 #include <fstream>
+#include <cmath>
 
 using namespace std;
 
 void insertNum(int* maxHeap, int num, int counter);
 void displayHeap(int* maxHeap, int index, int tabCounter);
 void heapify(int* maxHeap, int index);
+void reverseHeapify(int* maxHeap, int index);
 int removeLargest(int* maxHeap);
 void removeAll(int* maxHeap);
 void fileAdd(int* maxHeap);
@@ -51,7 +53,11 @@ int main() {
       removeAll(maxHeap);
     } else if(strcmp(input, "DISPLAY") == 0) {
       int index = 1;
-      displayHeap(maxHeap, index, 0);
+      if(maxHeap[index] == 0) {
+        cout << "No numbers to display in this heap." << endl;
+      } else {
+        displayHeap(maxHeap, index, 0);
+      }
     } else if(strcmp(input, "QUIT") == 0) {
       active = false; 
     } else {
@@ -62,27 +68,11 @@ int main() {
 }
 
 void insertNum(int* maxHeap, int num, int counter) {
-  /*if(maxHeap[counter] == 0){
-    maxHeap[counter] = num;
-  } else if(maxHeap[counter*2+1] == 0) {
-    maxHeap[counter*2+1] = num;
-  } else if(maxHeap[counter*2] == 0) {
-    maxHeap[counter*2] = num;
-  } else {
-    if(maxHeap[counter*4+2] !=0 && maxHeap[counter*4] == 0) {
-      counter = counter*2;
-      insertNum(maxHeap, num, counter);
-    } else {
-      counter = counter*2+1;
-      insertNum(maxHeap, num, counter);
-    }
-  }
-  heapify(maxHeap); */
   int index = 1;
   while(index < 101) {
     if(maxHeap[index] == 0) {
       maxHeap[index] = num;
-      heapify(maxHeap, 1);
+      heapify(maxHeap, index);
       return;
     } else {
       index++;
@@ -94,11 +84,11 @@ void insertNum(int* maxHeap, int num, int counter) {
 // https://www.geeksforgeeks.org/print-binary-tree-2-dimensions/
 void displayHeap(int* maxHeap, int index, int tabCounter) {
   // Base case
-  if (maxHeap[index] == 0) {
+  if (maxHeap[index] == 0 || index > 100) {
     return;
   }
     // Increase distance between levels
-  tabCounter += 1;
+  tabCounter++;
  
   // Process right child first
   displayHeap(maxHeap, (index*2+1), tabCounter);
@@ -115,66 +105,45 @@ void displayHeap(int* maxHeap, int index, int tabCounter) {
   displayHeap(maxHeap, (index*2), tabCounter);
 }
 
-/*void heapify(int* maxHeap) {
-  for(int i = 1; i < 101; i++) {
-    if(maxHeap[i] != 0 && maxHeap[i*2] != 0 && maxHeap[i] < maxHeap[i*2] && maxHeap[i*2] > maxHeap[i*2+1] && maxHeap[i*2] <= 101) {
-      int temp = maxHeap[i];
-      maxHeap[i] = maxHeap[i*2];
-      maxHeap[i*2] = temp;
-      if(i*2 < 101) {
-        heapify(maxHeap);
-      }
-    } else if(maxHeap[i] != 0 && maxHeap[i*2+1] != 0 && maxHeap[i] < maxHeap[i*2+1] && maxHeap[i*2+1] > maxHeap[i*2] && maxHeap[i*2+1] <= 101) {
-      int temp2 = maxHeap[i];
-      maxHeap[i] = maxHeap[i*2+1];
-      maxHeap[i*2+1] = temp2;
-      if(i*2+1 < 101) {
-        heapify(maxHeap);
-      }
-    }
-  }
-} */
 
 void heapify(int* maxHeap, int index) {
-  int largest = index; 
-    
-  if (index*2 <= 100 && maxHeap[index*2] > maxHeap[largest]) {
-    largest = index*2;
-  }
-    
-  if (index*2+1 <= 100 && maxHeap[index*2+1] > maxHeap[largest]) {
-    largest = index*2+1;
-  }
-    
-  if (largest != index) {
+  int parent = floor(index / 2);
+  if(maxHeap[index] > maxHeap[parent] && parent > 0 && index < 101) {
     int temp = maxHeap[index];
-    maxHeap[index] = maxHeap[largest];
-    maxHeap[largest] = temp;
-    // heapify(maxHeap, largest);
-  }
-  index++;
-  if(index < 101){
+    maxHeap[index] = maxHeap[parent];
+    maxHeap[parent] = temp;
+    index = parent;
     heapify(maxHeap, index);
   }
-  
 }
 
+void reverseHeapify(int* maxHeap, int index) {
+  if(maxHeap[index] < maxHeap[index*2] && maxHeap[index*2] > maxHeap[index*2+1] && index*2 < 101 && maxHeap[index*2] != 0) {
+    int temp = maxHeap[index];
+    maxHeap[index] = maxHeap[index*2];
+    maxHeap[index*2] = temp;
+    index = index*2;
+    reverseHeapify(maxHeap, index);
+  } else if(maxHeap[index] < maxHeap[index*2+1] && maxHeap[index*2+1] > maxHeap[index*2] && index*2+1 < 102 && maxHeap[index*2+1] != 0) {
+    int temp2 = maxHeap[index];
+    maxHeap[index] = maxHeap[index*2+1];
+    maxHeap[index*2+1] = temp2;
+    index = index*2+1;
+    reverseHeapify(maxHeap, index);
+  }
+}
 
 int removeLargest(int* maxHeap) {
   int index = 1;
   int largestNum = maxHeap[index];
   int temp;
   maxHeap[index] = -1;
-  heapify(maxHeap, 1);
+  reverseHeapify(maxHeap, index);
   for(int i = 0; i<101; i++) {
     if(maxHeap[i] == -1) {
       maxHeap[i] = 0;
     }
-    if(maxHeap[i] != 0) {
-      cout << maxHeap[i] << " " << i << endl;
-    }
   }
-  displayHeap(maxHeap, 1, 0);
   return largestNum;
   /*if(maxHeap[index*2] > maxHeap[index*2+1]) {
     while(maxHeap[index*2] != 0) {
