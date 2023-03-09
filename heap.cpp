@@ -166,6 +166,14 @@ void reverseHeapify(int* maxHeap, int index) {
     maxHeap[index*2+1] = temp2;
     index = index*2+1;
     reverseHeapify(maxHeap, index);
+	
+  // Accounts for possibility that both children are the same (in which case it swaps with the left child)
+  } else if(maxHeap[index] < maxHeap[index*2+1] && maxHeap[index*2+1] == maxHeap[index*2] && index*2+1 < 102 && maxHeap[index*2+1] != 0) {
+    int temp2 = maxHeap[index];
+    maxHeap[index] = maxHeap[index*2+1];
+    maxHeap[index*2+1] = temp2;
+    index = index*2+1;
+    reverseHeapify(maxHeap, index);
   }
 }
 
